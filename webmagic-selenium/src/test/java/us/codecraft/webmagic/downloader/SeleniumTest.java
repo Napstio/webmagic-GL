@@ -1,4 +1,5 @@
 package us.codecraft.webmagic.downloader;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,10 +20,9 @@ import java.util.Map;
  */
 public class SeleniumTest {
 
-    @Ignore("need chrome driver")
     @Test
     public void testSelenium() {
-        System.getProperties().setProperty("webdriver.chrome.driver", "/Users/yihua/Downloads/chromedriver");
+        WebDriverManager.chromedriver().setup();
         Map<String, Object> contentSettings = new HashMap<String, Object>();
         contentSettings.put("images", 2);
 
@@ -30,8 +30,8 @@ public class SeleniumTest {
         preferences.put("profile.default_content_settings", contentSettings);
 
         ChromeOptions options = new ChromeOptions();
-        options.setCapability("chrome.prefs", preferences);
-        options.setCapability("chrome.switches", Arrays.asList("--user-data-dir=/Users/yihua/temp/chrome"));
+        options.setExperimentalOption("prefs", preferences);
+        options.addArguments("--user-data-dir=" + System.getProperty("user.home") + "/temp/chrome");
         WebDriver webDriver = new ChromeDriver(options);
         webDriver.get("http://huaban.com/");
         WebElement webElement = webDriver.findElement(By.xpath("/html"));
